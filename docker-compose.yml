@@ -1,4 +1,13 @@
 services:
+  network-traffic-web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    ports:
+      - "5204:80"
+    depends_on:
+      - network-traffic-api
+
   network-traffic-api:
     build: .
     command: npm run start:api
