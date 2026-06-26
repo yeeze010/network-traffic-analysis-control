@@ -24,6 +24,7 @@ import {
 dotenv.config({ path: resolve(process.cwd(), ".env.ports") });
 
 const port = Number(process.env.API_PORT || process.env.SERVER_PORT || 8204);
+const host = process.env.HOST || "0.0.0.0";
 const webPort = Number(process.env.WEB_PORT || process.env.VITE_PORT || 5204);
 const previewPort = Number(process.env.PREVIEW_PORT || 6204);
 const allowedOrigins = new Set([
@@ -274,8 +275,8 @@ export function createServer(store = new JsonStore()) {
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const server = createServer();
-  server.listen(port, "127.0.0.1", () => {
-    console.log(`network-traffic-api listening on http://127.0.0.1:${port}/api/health`);
+  server.listen(port, host, () => {
+    console.log(`network-traffic-api listening on http://${host}:${port}/api/health`);
   });
   server.on("error", (error) => {
     if (error.code === "EADDRINUSE") {
