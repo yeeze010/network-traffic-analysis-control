@@ -201,6 +201,7 @@ select {
 
 button {
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 button:disabled {
@@ -437,6 +438,16 @@ small {
 .chip.active {
   border-color: var(--green);
   color: var(--green);
+}
+
+.primary-button:active,
+.secondary-button:active,
+.icon-button:active,
+.mini-button:active,
+.chip:active,
+.nav-item:active,
+.table-row[role="button"]:active {
+  transform: translateY(1px);
 }
 
 .icon-button {
@@ -1065,6 +1076,31 @@ select {
     gap: 10px;
     padding-top: 10px;
   }
+
+  .data-table {
+    overflow-x: visible;
+  }
+
+  .table-head {
+    display: none;
+  }
+
+  .table-row,
+  .five,
+  .six,
+  .seven {
+    min-width: 0;
+    grid-template-columns: 1fr;
+  }
+
+  .table-row span {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .table-row span:last-child {
+    border-bottom: 0;
+  }
 }
 
 @media (max-width: 560px) {
@@ -1112,5 +1148,6 @@ select {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
