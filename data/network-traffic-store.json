@@ -1,0 +1,650 @@
+{
+  "collectors": [
+    {
+      "id": "CN-BJ-CORE-01",
+      "name": "Beijing core switch mirror node",
+      "ip": "10.10.0.21",
+      "zone": "core",
+      "status": "online",
+      "throughputMbps": 6800,
+      "packetLoss": 0.02,
+      "heartbeatAt": "2026-06-25T09:55:21+08:00",
+      "interfaces": [
+        {
+          "name": "ens192",
+          "mode": "SPAN",
+          "enabled": true,
+          "rateMbps": 3200
+        },
+        {
+          "name": "ens224",
+          "mode": "TAP",
+          "enabled": true,
+          "rateMbps": 3600
+        }
+      ]
+    },
+    {
+      "id": "CN-SH-DMZ-02",
+      "name": "Shanghai DMZ edge node",
+      "ip": "10.20.0.33",
+      "zone": "dmz",
+      "status": "degraded",
+      "throughputMbps": 2100,
+      "packetLoss": 1.12,
+      "heartbeatAt": "2026-06-25T09:54:08+08:00",
+      "interfaces": [
+        {
+          "name": "eno1",
+          "mode": "SPAN",
+          "enabled": true,
+          "rateMbps": 2100
+        },
+        {
+          "name": "eno2",
+          "mode": "standby",
+          "enabled": false,
+          "rateMbps": 0
+        }
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "token": "nt-ecd9ada35516eec32c50713c398aa7e34ad44470b809002a",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-25T01:35:48.066Z",
+      "expiresAt": "2026-06-25T09:35:48.066Z"
+    },
+    {
+      "token": "nt-92c6599aeed6b5e3327f0971616f03f9608a776170ed6586",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-25T01:22:42.984Z",
+      "expiresAt": "2026-06-25T09:22:42.984Z"
+    },
+    {
+      "token": "nt-fc0508b4fff84cdba67b1f97126d745a1ed485b6d6a260b3",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-25T01:18:48.377Z",
+      "expiresAt": "2026-06-25T09:18:48.377Z"
+    },
+    {
+      "token": "nt-b5725bc12601f70d57948c702cc90ff6a4a497c164076f14",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-25T01:17:57.291Z",
+      "expiresAt": "2026-06-25T09:17:57.291Z"
+    },
+    {
+      "token": "nt-c3c906da3dca57babd01c2f4d7c0888b81520377eec264d3",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-25T01:10:24.660Z",
+      "expiresAt": "2026-06-25T09:10:24.660Z"
+    },
+    {
+      "token": "nt-c1dcb17fa45ab3428d09f4960ff50c17165b77c30f92302b",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-25T01:10:24.634Z",
+      "expiresAt": "2026-06-25T09:10:24.634Z"
+    },
+    {
+      "token": "nt-caf2052d70dd35e173095d5b812a921fa672ec89b272c3d0",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-25T01:10:24.607Z",
+      "expiresAt": "2026-06-25T09:10:24.607Z"
+    },
+    {
+      "token": "nt-a6335d0ce7d6baf2b0784431aac9a72fbfcd78b28ffc5f59",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-25T01:10:15.649Z",
+      "expiresAt": "2026-06-25T09:10:15.649Z"
+    },
+    {
+      "token": "nt-cc1a37dc2dcb5ede715f99c7347d1eb84f5ab2eb453ba54f",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-25T01:10:15.622Z",
+      "expiresAt": "2026-06-25T09:10:15.622Z"
+    },
+    {
+      "token": "nt-598341d01b4268f91f287071df21ed8950df11efb4214c94",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-25T01:10:15.592Z",
+      "expiresAt": "2026-06-25T09:10:15.592Z"
+    },
+    {
+      "token": "nt-6a58a84d498f5661bb22f4a22f2892e6324aafcbf052aeb2",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-25T01:10:01.582Z",
+      "expiresAt": "2026-06-25T09:10:01.582Z"
+    },
+    {
+      "token": "nt-1d136a3de24e3beeaf6d10f286151a581a0bbe01a5128d7d",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-25T01:10:01.556Z",
+      "expiresAt": "2026-06-25T09:10:01.556Z"
+    },
+    {
+      "token": "nt-d2afc38d21c72877a4e69fcd17da8adcaaa80c30af98134b",
+      "userId": "U-VIEWER",
+      "createdAt": "2026-06-25T01:10:01.533Z",
+      "expiresAt": "2026-06-25T09:10:01.533Z"
+    },
+    {
+      "token": "nt-d2ac0896576e8d80571036e16058c88195800f66dfa7d933",
+      "userId": "U-AUDITOR",
+      "createdAt": "2026-06-25T01:10:01.508Z",
+      "expiresAt": "2026-06-25T09:10:01.508Z"
+    },
+    {
+      "token": "nt-ce65f0e047462b537d9c34eec967cad6a743085ade68b259",
+      "userId": "U-APPROVER",
+      "createdAt": "2026-06-25T01:10:01.485Z",
+      "expiresAt": "2026-06-25T09:10:01.485Z"
+    },
+    {
+      "token": "nt-21337b26fdb456cbcae5ea35c74052b6a1d5e5ec7ff469d1",
+      "userId": "U-OPS",
+      "createdAt": "2026-06-25T01:10:01.456Z",
+      "expiresAt": "2026-06-25T09:10:01.456Z"
+    },
+    {
+      "token": "nt-229b7021a1c9f772af223b973a44da039bc3903294d562ae",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-25T01:10:01.425Z",
+      "expiresAt": "2026-06-25T09:10:01.425Z"
+    },
+    {
+      "token": "nt-1974d1c30f61060734c5499e0bc44b28bc3323adbd9ad4d3",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-24T17:50:21.287Z",
+      "expiresAt": "2026-06-25T01:50:21.287Z"
+    },
+    {
+      "token": "nt-9013f56fda33b3ec4c554645832ece4ace362236f37144dd",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-24T17:44:26.683Z",
+      "expiresAt": "2026-06-25T01:44:26.683Z"
+    },
+    {
+      "token": "nt-167b7cfc02b16c4c2793e9e85f194685200420f44ce5f52c",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-24T17:44:20.467Z",
+      "expiresAt": "2026-06-25T01:44:20.467Z"
+    },
+    {
+      "token": "nt-c9f435998a1d1c9cd964be854e1c599efe7f1c0fe1b43c1d",
+      "userId": "U-ADMIN",
+      "createdAt": "2026-06-24T17:19:30.292Z",
+      "expiresAt": "2026-06-25T01:19:30.292Z"
+    },
+    {
+      "token": "nt-b08d09c1f62ac0509323117fa1ea4879ed1a5efe57d1d824",
+      "userId": "U-APPROVER",
+      "createdAt": "2026-06-24T17:19:30.271Z",
+      "expiresAt": "2026-06-25T01:19:30.271Z"
+    },
+    {
+      "token": "nt-548dcf47ad603a3b52f4d98ba9361c6eb527a81386161242",
+      "userId": "U-OPS",
+      "createdAt": "2026-06-24T17:19:30.247Z",
+      "expiresAt": "2026-06-25T01:19:30.247Z"
+    }
+  ],
+  "alerts": [
+    {
+      "handlingRecords": [],
+      "evidence": [],
+      "closeReason": null,
+      "timeline": [
+        {
+          "at": "2026-06-25T09:51:30+08:00",
+          "actor": "system",
+          "action": "created",
+          "note": "Rule RDP-BRUTE-002 matched 338 failures."
+        }
+      ],
+      "id": "A-77521",
+      "title": "RDP brute-force followed by suspected lateral movement",
+      "severity": "critical",
+      "status": "new",
+      "source": "anomaly-engine",
+      "owner": null,
+      "relatedSessionId": "S-902810",
+      "slaMinutes": 15,
+      "createdAt": "2026-06-25T09:51:30+08:00"
+    },
+    {
+      "handlingRecords": [],
+      "evidence": [],
+      "closeReason": null,
+      "timeline": [
+        {
+          "at": "2026-06-25T09:49:00+08:00",
+          "actor": "system",
+          "action": "created",
+          "note": "SMB lateral scan threshold exceeded."
+        },
+        {
+          "at": "2026-06-25T09:50:12+08:00",
+          "actor": "zhou.ops",
+          "action": "assigned",
+          "note": "Started session review."
+        }
+      ],
+      "id": "A-77520",
+      "title": "SMB cross-segment batch connection",
+      "severity": "high",
+      "status": "investigating",
+      "source": "rule-engine",
+      "owner": "zhou.ops",
+      "relatedSessionId": "S-902813",
+      "slaMinutes": 30,
+      "createdAt": "2026-06-25T09:49:00+08:00"
+    }
+  ],
+  "policies": [
+    {
+      "id": "P-1782349801639",
+      "name": "qa-operator-1782349801638",
+      "priority": 99,
+      "action": "deny",
+      "status": "draft",
+      "selector": {
+        "roles": [
+          "operator"
+        ]
+      },
+      "owner": "operator",
+      "changeTicket": null,
+      "updatedAt": "2026-06-25T01:10:01.639Z"
+    },
+    {
+      "id": "P-1782349801629",
+      "name": "qa-admin-1782349801626",
+      "priority": 99,
+      "action": "deny",
+      "status": "draft",
+      "selector": {
+        "roles": [
+          "admin"
+        ]
+      },
+      "owner": "admin",
+      "changeTicket": null,
+      "updatedAt": "2026-06-25T01:10:01.629Z"
+    },
+    {
+      "id": "P-240601",
+      "name": "Block risky RDP outbound access",
+      "priority": 10,
+      "action": "deny",
+      "status": "enabled",
+      "selector": {
+        "destinationPorts": [
+          3389
+        ],
+        "protocols": [
+          "RDP"
+        ],
+        "directions": [
+          "outbound",
+          "lateral"
+        ]
+      },
+      "owner": "secops",
+      "changeTicket": "CHG-20260625-001",
+      "updatedAt": "2026-06-25T09:20:00+08:00"
+    },
+    {
+      "id": "P-240602",
+      "name": "Limit SMB cross-zone access",
+      "priority": 20,
+      "action": "limit",
+      "status": "enabled",
+      "selector": {
+        "destinationPorts": [
+          445
+        ],
+        "protocols": [
+          "SMB"
+        ],
+        "directions": [
+          "lateral"
+        ]
+      },
+      "bandwidthLimitMbps": 50,
+      "owner": "policy-admin",
+      "changeTicket": "CHG-QA-approver",
+      "updatedAt": "2026-06-25T01:10:01.650Z"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "LOG-0029",
+      "at": "2026-06-25T01:35:48.066Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0028",
+      "at": "2026-06-25T01:22:42.984Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0027",
+      "at": "2026-06-25T01:18:48.377Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0026",
+      "at": "2026-06-25T01:17:57.291Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0025",
+      "at": "2026-06-25T01:10:24.660Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0024",
+      "at": "2026-06-25T01:10:24.634Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0023",
+      "at": "2026-06-25T01:10:24.607Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0022",
+      "at": "2026-06-25T01:10:15.649Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0021",
+      "at": "2026-06-25T01:10:15.622Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0020",
+      "at": "2026-06-25T01:10:15.592Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0019",
+      "at": "2026-06-25T01:10:01.650Z",
+      "actor": "approver",
+      "action": "policy.enabled",
+      "target": "P-240602",
+      "detail": "Published with ticket CHG-QA-approver."
+    },
+    {
+      "id": "LOG-0018",
+      "at": "2026-06-25T01:10:01.639Z",
+      "actor": "operator",
+      "action": "policy.created",
+      "target": "P-1782349801639",
+      "detail": "Draft policy created."
+    },
+    {
+      "id": "LOG-0017",
+      "at": "2026-06-25T01:10:01.632Z",
+      "actor": "admin",
+      "action": "policy.enabled",
+      "target": "P-240602",
+      "detail": "Published with ticket CHG-QA-admin."
+    },
+    {
+      "id": "LOG-0016",
+      "at": "2026-06-25T01:10:01.629Z",
+      "actor": "admin",
+      "action": "policy.created",
+      "target": "P-1782349801629",
+      "detail": "Draft policy created."
+    },
+    {
+      "id": "LOG-0015",
+      "at": "2026-06-25T01:10:01.582Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0014",
+      "at": "2026-06-25T01:10:01.556Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0013",
+      "at": "2026-06-25T01:10:01.533Z",
+      "actor": "viewer",
+      "action": "auth.login",
+      "target": "U-VIEWER",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0012",
+      "at": "2026-06-25T01:10:01.508Z",
+      "actor": "auditor",
+      "action": "auth.login",
+      "target": "U-AUDITOR",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0011",
+      "at": "2026-06-25T01:10:01.485Z",
+      "actor": "approver",
+      "action": "auth.login",
+      "target": "U-APPROVER",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0010",
+      "at": "2026-06-25T01:10:01.456Z",
+      "actor": "operator",
+      "action": "auth.login",
+      "target": "U-OPS",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0009",
+      "at": "2026-06-25T01:10:01.425Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0008",
+      "at": "2026-06-24T17:50:21.287Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0007",
+      "at": "2026-06-24T17:44:26.683Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0006",
+      "at": "2026-06-24T17:44:20.467Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0005",
+      "at": "2026-06-24T17:19:30.310Z",
+      "actor": "approver",
+      "action": "policy.enabled",
+      "target": "P-240602",
+      "detail": "Published with ticket CHG-RBAC-OK."
+    },
+    {
+      "id": "LOG-0004",
+      "at": "2026-06-24T17:19:30.292Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0003",
+      "at": "2026-06-24T17:19:30.271Z",
+      "actor": "approver",
+      "action": "auth.login",
+      "target": "U-APPROVER",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0002",
+      "at": "2026-06-24T17:19:30.247Z",
+      "actor": "operator",
+      "action": "auth.login",
+      "target": "U-OPS",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0001",
+      "at": "2026-06-25T09:20:00+08:00",
+      "actor": "secops",
+      "action": "policy.enabled",
+      "target": "P-240601",
+      "detail": "Initial production policy set loaded."
+    }
+  ],
+  "users": [
+    {
+      "id": "U-ADMIN",
+      "username": "admin",
+      "displayName": "System Administrator",
+      "role": "admin",
+      "passwordHash": "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
+      "salt": "network-traffic-demo",
+      "passwordAlgorithm": "pbkdf2-sha256-120000",
+      "active": true
+    },
+    {
+      "id": "U-OPS",
+      "username": "operator",
+      "displayName": "Security Operator",
+      "role": "operator",
+      "passwordHash": "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
+      "salt": "network-traffic-demo",
+      "passwordAlgorithm": "pbkdf2-sha256-120000",
+      "active": true
+    },
+    {
+      "id": "U-APPROVER",
+      "username": "approver",
+      "displayName": "Policy Approver",
+      "role": "approver",
+      "passwordHash": "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
+      "salt": "network-traffic-demo",
+      "passwordAlgorithm": "pbkdf2-sha256-120000",
+      "active": true
+    },
+    {
+      "id": "U-AUDITOR",
+      "username": "auditor",
+      "displayName": "Audit Reader",
+      "role": "auditor",
+      "passwordHash": "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
+      "salt": "network-traffic-demo",
+      "passwordAlgorithm": "pbkdf2-sha256-120000",
+      "active": true
+    },
+    {
+      "id": "U-VIEWER",
+      "username": "viewer",
+      "displayName": "Read Only Viewer",
+      "role": "viewer",
+      "passwordHash": "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
+      "salt": "network-traffic-demo",
+      "passwordAlgorithm": "pbkdf2-sha256-120000",
+      "active": true
+    }
+  ],
+  "trafficSessions": [
+    {
+      "id": "S-902814",
+      "sourceIp": "10.12.8.45",
+      "sourcePort": 53822,
+      "destinationIp": "203.0.113.24",
+      "destinationPort": 443,
+      "protocol": "HTTPS",
+      "application": "enterprise-portal",
+      "direction": "outbound",
+      "bytes": 2800000000,
+      "packets": 184220,
+      "risk": "low",
+      "capturedAt": "2026-06-25T09:55:21+08:00"
+    },
+    {
+      "id": "S-902813",
+      "sourceIp": "10.6.22.103",
+      "sourcePort": 445,
+      "destinationIp": "10.20.4.17",
+      "destinationPort": 54918,
+      "protocol": "SMB",
+      "application": "file-sharing",
+      "direction": "lateral",
+      "bytes": 980000000,
+      "packets": 84118,
+      "risk": "high",
+      "capturedAt": "2026-06-25T09:54:49+08:00"
+    },
+    {
+      "id": "S-902810",
+      "sourceIp": "10.30.9.82",
+      "sourcePort": 3389,
+      "destinationIp": "10.40.0.27",
+      "destinationPort": 3389,
+      "protocol": "RDP",
+      "application": "remote-desktop",
+      "direction": "lateral",
+      "bytes": 520000000,
+      "packets": 41902,
+      "risk": "critical",
+      "capturedAt": "2026-06-25T09:51:04+08:00"
+    }
+  ]
+}

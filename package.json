@@ -1,0 +1,30 @@
+{
+  "name": "network-traffic-analysis-control",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5204 --strictPort",
+    "dev:api": "node apps/api/src/server.mjs",
+    "start:api": "node apps/api/src/server.mjs",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 6204 --strictPort",
+    "test": "node tests/auth-service.test.mjs && node tests/policy-service.test.mjs && node tests/api-smoke-test.mjs",
+    "validate:docs": "powershell -ExecutionPolicy Bypass -File .\\scripts\\validate-docs.ps1",
+    "validate": "npm run test && npm run build && npm run validate:docs"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.0.0",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.15.0",
+    "vite": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "dotenv": "^16.4.7",
+    "typescript": "^5.7.2"
+  }
+}
