@@ -1,13 +1,13 @@
-# Network Traffic Analysis Control
+# 网络流量分析监测管控软件
 
-Network Traffic Analysis Control is a local traffic security operations system for collector nodes, traffic sessions, alerts, control policies, reports, and audit logs.
+网络流量分析监测管控软件是一套面向采集节点、网络会话、异常告警、管控策略、报表和审计日志的本地网络安全运营系统。
 
 This repository is being upgraded from a frontend MVP into a usable engineering project. The first production-oriented slice now includes:
 
 - Vite + React + TypeScript frontend
 - Node.js API service under `apps/api`
-- JSON file persistence under `data/network-traffic-store.json`
-- User login with PBKDF2 password hashes and bearer tokens
+- PostgreSQL persistence in Docker, with a JSON store available for local recovery use
+- User login with PBKDF2 password hashes and signed, expiring JWT access tokens
 - Role-based access control for alert handling, policy creation, policy publishing, audit logs, and user listing
 - Collector, session, alert, policy, and audit-log API endpoints
 - Policy creation and publishing workflow with audit records
@@ -37,18 +37,15 @@ Implemented:
 - Alert list and transition API
 - Policy list, create, and publish API
 - Audit log API
-- File-backed seed data and persistence
+- PostgreSQL schema initialization and persistent Docker volume
 - Frontend build
 - API and service tests
 
 Still planned:
 
-- Database-backed user/session migrations
 - Remaining frontend page extraction into feature modules
 - API-backed reports, protocol rankings, and anomaly drill-downs
-- SQLite or PostgreSQL migration path
 - Real traffic ingestion from PCAP, NetFlow, Zeek, or Suricata feeds
-- Policy conflict simulation wired into the backend
 - End-to-end browser tests
 
 ## Local Development
@@ -62,6 +59,8 @@ npm.cmd install
 Start the API:
 
 ```powershell
+$env:BOOTSTRAP_ADMIN_PASSWORD="use-a-strong-password-here"
+$env:JWT_SECRET="use-at-least-32-random-characters-here"
 npm.cmd run dev:api
 ```
 
@@ -101,7 +100,7 @@ npm.cmd run validate
 
 ## API Examples
 
-Default local users use the password `Password123!`.
+On a new store, the API creates only the `admin` account. Its password is read from `BOOTSTRAP_ADMIN_PASSWORD`; no password is stored in source code. Additional users are created by an administrator from the user-management screen.
 
 | Username | Role | Main permissions |
 | --- | --- | --- |
@@ -126,7 +125,7 @@ $login = Invoke-RestMethod `
   -Method Post `
   -Uri http://127.0.0.1:8204/api/auth/login `
   -ContentType "application/json" `
-  -Body '{"username":"admin","password":"Password123!"}'
+  -Body (@{ role="admin"; username="admin"; password=$env:BOOTSTRAP_ADMIN_PASSWORD } | ConvertTo-Json)
 ```
 
 Health:
@@ -170,7 +169,7 @@ apps/api/src
   data/          Seed state
   http/          HTTP helpers
   services/      Business services
-  store/         JSON persistence
+  store/         PostgreSQL and JSON persistence adapters
   server.mjs     API entrypoint
 src/
   domain/        Existing traffic and policy domain logic
@@ -182,10 +181,10 @@ docs/            Product, architecture, deployment, and test docs
 
 ## Docker
 
-Build and run the API service:
+Create a local `.env` from `.env.example`, replace every placeholder with a strong value, then build and run the complete stack:
 
 ```powershell
 docker compose up --build
 ```
 
-The compose service persists local JSON data through `./data:/app/data`.
+PostgreSQL data is persisted in the `network-traffic-db-data` Docker volume. The API waits for the database health check, initializes the schema idempotently, and creates the first administrator from environment configuration.

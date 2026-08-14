@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { URL } from "node:url";
 import dotenv from "dotenv";
 import { resolve } from "node:path";
-import { JsonStore } from "./store/json-store.mjs";
+import { createStore } from "./store/index.mjs";
 import { sendError, sendJson, readJson } from "./http/respond.mjs";
 import { buildOverview } from "./services/dashboard-service.mjs";
 import { addEvidence, addHandlingRecord, assignAlert, getAlertDetail, transitionAlert } from "./services/alert-service.mjs";
@@ -34,7 +34,7 @@ const allowedOrigins = new Set([
   `http://localhost:${previewPort}`
 ]);
 
-export function createServer(store = new JsonStore()) {
+export function createServer(store = createStore()) {
   return http.createServer(async (req, res) => {
     const origin = req.headers.origin;
     if (req.method === "OPTIONS") {
@@ -47,7 +47,8 @@ export function createServer(store = new JsonStore()) {
       const actor = req.headers["x-actor"] || "local.operator";
 
       if (req.method === "GET" && url.pathname === "/api/health") {
-        sendJson(res, 200, { status: "ok", service: "network-traffic-api", port }, origin, allowedOrigins);
+        await store.read();
+        sendJson(res, 200, { status: "ok", service: "网络流量分析监测管控软件 API", port }, origin, allowedOrigins);
         return;
       }
 
@@ -235,7 +236,7 @@ export function createServer(store = new JsonStore()) {
         const body = await readJson(req);
         const created = await store.update((state) => {
           const user = authenticate(state, req);
-          requirePermission(user, "user:read");
+          requirePermission(user, "user:write");
           return createUser(state, body, user.username);
         });
         sendJson(res, 201, created, origin, allowedOrigins);
@@ -247,7 +248,7 @@ export function createServer(store = new JsonStore()) {
         const body = await readJson(req);
         const updated = await store.update((state) => {
           const user = authenticate(state, req);
-          requirePermission(user, "user:read");
+          requirePermission(user, "user:write");
           return updateUser(state, userUpdate[1], body, user.username);
         });
         sendJson(res, 200, updated, origin, allowedOrigins);
@@ -259,7 +260,7 @@ export function createServer(store = new JsonStore()) {
         const body = await readJson(req);
         const updated = await store.update((state) => {
           const user = authenticate(state, req);
-          requirePermission(user, "user:read");
+          requirePermission(user, "user:write");
           return resetPassword(state, passwordReset[1], body.password, user.username);
         });
         sendJson(res, 200, updated, origin, allowedOrigins);
@@ -276,7 +277,7 @@ export function createServer(store = new JsonStore()) {
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const server = createServer();
   server.listen(port, host, () => {
-    console.log(`network-traffic-api listening on http://${host}:${port}/api/health`);
+    console.log(`网络流量分析监测管控软件 API listening on http://${host}:${port}/api/health`);
   });
   server.on("error", (error) => {
     if (error.code === "EADDRINUSE") {

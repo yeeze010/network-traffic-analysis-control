@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
 import { once } from "node:events";
 import { createServer } from "../apps/api/src/server.mjs";
-import { seedState } from "../apps/api/src/data/seed.mjs";
 import { createMemoryStore } from "../apps/api/src/store/json-store.mjs";
+import { TEST_PASSWORD, TEST_RESET_PASSWORD, testState } from "./fixtures/test-state.mjs";
 
-const server = createServer(createMemoryStore(seedState));
+process.env.JWT_SECRET = "test-only-jwt-secret-with-at-least-32-characters";
+const server = createServer(createMemoryStore(testState));
 server.listen(0, "127.0.0.1");
 await once(server, "listening");
 const { port } = server.address();
@@ -26,32 +27,38 @@ async function request(path, options = {}) {
 try {
   let loginResult = await request("/api/auth/login", {
     method: "POST",
-    body: JSON.stringify({ role: "operator", username: "operator", password: "Password123!" })
+    body: JSON.stringify({ role: "operator", username: "operator", password: TEST_PASSWORD })
   });
   assert.equal(loginResult.response.status, 200);
   const operatorToken = loginResult.body.data.token;
 
   let approverLogin = await request("/api/auth/login", {
     method: "POST",
-    body: JSON.stringify({ role: "approver", username: "approver", password: "Password123!" })
+    body: JSON.stringify({ role: "approver", username: "approver", password: TEST_PASSWORD })
   });
   const approverToken = approverLogin.body.data.token;
 
   let adminLogin = await request("/api/auth/login", {
     method: "POST",
-    body: JSON.stringify({ role: "admin", username: "admin", password: "Password123!" })
+    body: JSON.stringify({ role: "admin", username: "admin", password: TEST_PASSWORD })
   });
   const adminToken = adminLogin.body.data.token;
 
   let viewerLogin = await request("/api/auth/login", {
     method: "POST",
-    body: JSON.stringify({ role: "viewer", username: "viewer", password: "Password123!" })
+    body: JSON.stringify({ role: "viewer", username: "viewer", password: TEST_PASSWORD })
   });
   const viewerToken = viewerLogin.body.data.token;
 
-  let result = await request("/api/health");
+  let result = await request("/api/dashboard/overview", {
+    headers: { Authorization: `Bearer ${viewerToken.slice(0, -1)}x` }
+  });
+  assert.equal(result.response.status, 401);
+
+  result = await request("/api/health");
   assert.equal(result.response.status, 200);
   assert.equal(result.body.data.status, "ok");
+  assert.equal(result.body.data.service, "网络流量分析监测管控软件 API");
 
   for (const path of [
     "/api/dashboard/overview",
@@ -233,12 +240,19 @@ try {
 
   result = await request("/api/users", {
     method: "POST",
+    headers: { Authorization: `Bearer ${viewerToken}` },
+    body: JSON.stringify({ username: "forbidden.user", displayName: "Forbidden User", role: "viewer", password: TEST_PASSWORD })
+  });
+  assert.equal(result.response.status, 403);
+
+  result = await request("/api/users", {
+    method: "POST",
     headers: { Authorization: `Bearer ${adminToken}` },
     body: JSON.stringify({
       username: "new.viewer",
       displayName: "New Viewer",
       role: "viewer",
-      password: "Password123!"
+      password: TEST_PASSWORD
     })
   });
   assert.equal(result.response.status, 201);
@@ -257,7 +271,7 @@ try {
   result = await request(`/api/users/${newUserId}/password`, {
     method: "PATCH",
     headers: { Authorization: `Bearer ${adminToken}` },
-    body: JSON.stringify({ password: "Password456!" })
+    body: JSON.stringify({ password: TEST_RESET_PASSWORD })
   });
   assert.equal(result.response.status, 200);
 

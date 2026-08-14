@@ -13,6 +13,7 @@ RUN npm ci --omit=dev
 COPY --from=build /app/dist ./dist
 COPY apps ./apps
 COPY data ./data
+COPY database ./database
 COPY .env.ports ./.env.ports
 EXPOSE 8204 6204
 CMD ["npm", "run", "start:api"]

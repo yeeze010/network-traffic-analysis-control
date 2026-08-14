@@ -49,146 +49,7 @@
       ]
     }
   ],
-  "sessions": [
-    {
-      "token": "nt-ecd9ada35516eec32c50713c398aa7e34ad44470b809002a",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-25T01:35:48.066Z",
-      "expiresAt": "2026-06-25T09:35:48.066Z"
-    },
-    {
-      "token": "nt-92c6599aeed6b5e3327f0971616f03f9608a776170ed6586",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-25T01:22:42.984Z",
-      "expiresAt": "2026-06-25T09:22:42.984Z"
-    },
-    {
-      "token": "nt-fc0508b4fff84cdba67b1f97126d745a1ed485b6d6a260b3",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-25T01:18:48.377Z",
-      "expiresAt": "2026-06-25T09:18:48.377Z"
-    },
-    {
-      "token": "nt-b5725bc12601f70d57948c702cc90ff6a4a497c164076f14",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-25T01:17:57.291Z",
-      "expiresAt": "2026-06-25T09:17:57.291Z"
-    },
-    {
-      "token": "nt-c3c906da3dca57babd01c2f4d7c0888b81520377eec264d3",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-25T01:10:24.660Z",
-      "expiresAt": "2026-06-25T09:10:24.660Z"
-    },
-    {
-      "token": "nt-c1dcb17fa45ab3428d09f4960ff50c17165b77c30f92302b",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-25T01:10:24.634Z",
-      "expiresAt": "2026-06-25T09:10:24.634Z"
-    },
-    {
-      "token": "nt-caf2052d70dd35e173095d5b812a921fa672ec89b272c3d0",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-25T01:10:24.607Z",
-      "expiresAt": "2026-06-25T09:10:24.607Z"
-    },
-    {
-      "token": "nt-a6335d0ce7d6baf2b0784431aac9a72fbfcd78b28ffc5f59",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-25T01:10:15.649Z",
-      "expiresAt": "2026-06-25T09:10:15.649Z"
-    },
-    {
-      "token": "nt-cc1a37dc2dcb5ede715f99c7347d1eb84f5ab2eb453ba54f",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-25T01:10:15.622Z",
-      "expiresAt": "2026-06-25T09:10:15.622Z"
-    },
-    {
-      "token": "nt-598341d01b4268f91f287071df21ed8950df11efb4214c94",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-25T01:10:15.592Z",
-      "expiresAt": "2026-06-25T09:10:15.592Z"
-    },
-    {
-      "token": "nt-6a58a84d498f5661bb22f4a22f2892e6324aafcbf052aeb2",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-25T01:10:01.582Z",
-      "expiresAt": "2026-06-25T09:10:01.582Z"
-    },
-    {
-      "token": "nt-1d136a3de24e3beeaf6d10f286151a581a0bbe01a5128d7d",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-25T01:10:01.556Z",
-      "expiresAt": "2026-06-25T09:10:01.556Z"
-    },
-    {
-      "token": "nt-d2afc38d21c72877a4e69fcd17da8adcaaa80c30af98134b",
-      "userId": "U-VIEWER",
-      "createdAt": "2026-06-25T01:10:01.533Z",
-      "expiresAt": "2026-06-25T09:10:01.533Z"
-    },
-    {
-      "token": "nt-d2ac0896576e8d80571036e16058c88195800f66dfa7d933",
-      "userId": "U-AUDITOR",
-      "createdAt": "2026-06-25T01:10:01.508Z",
-      "expiresAt": "2026-06-25T09:10:01.508Z"
-    },
-    {
-      "token": "nt-ce65f0e047462b537d9c34eec967cad6a743085ade68b259",
-      "userId": "U-APPROVER",
-      "createdAt": "2026-06-25T01:10:01.485Z",
-      "expiresAt": "2026-06-25T09:10:01.485Z"
-    },
-    {
-      "token": "nt-21337b26fdb456cbcae5ea35c74052b6a1d5e5ec7ff469d1",
-      "userId": "U-OPS",
-      "createdAt": "2026-06-25T01:10:01.456Z",
-      "expiresAt": "2026-06-25T09:10:01.456Z"
-    },
-    {
-      "token": "nt-229b7021a1c9f772af223b973a44da039bc3903294d562ae",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-25T01:10:01.425Z",
-      "expiresAt": "2026-06-25T09:10:01.425Z"
-    },
-    {
-      "token": "nt-1974d1c30f61060734c5499e0bc44b28bc3323adbd9ad4d3",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-24T17:50:21.287Z",
-      "expiresAt": "2026-06-25T01:50:21.287Z"
-    },
-    {
-      "token": "nt-9013f56fda33b3ec4c554645832ece4ace362236f37144dd",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-24T17:44:26.683Z",
-      "expiresAt": "2026-06-25T01:44:26.683Z"
-    },
-    {
-      "token": "nt-167b7cfc02b16c4c2793e9e85f194685200420f44ce5f52c",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-24T17:44:20.467Z",
-      "expiresAt": "2026-06-25T01:44:20.467Z"
-    },
-    {
-      "token": "nt-c9f435998a1d1c9cd964be854e1c599efe7f1c0fe1b43c1d",
-      "userId": "U-ADMIN",
-      "createdAt": "2026-06-24T17:19:30.292Z",
-      "expiresAt": "2026-06-25T01:19:30.292Z"
-    },
-    {
-      "token": "nt-b08d09c1f62ac0509323117fa1ea4879ed1a5efe57d1d824",
-      "userId": "U-APPROVER",
-      "createdAt": "2026-06-24T17:19:30.271Z",
-      "expiresAt": "2026-06-25T01:19:30.271Z"
-    },
-    {
-      "token": "nt-548dcf47ad603a3b52f4d98ba9361c6eb527a81386161242",
-      "userId": "U-OPS",
-      "createdAt": "2026-06-24T17:19:30.247Z",
-      "expiresAt": "2026-06-25T01:19:30.247Z"
-    }
-  ],
+  "sessions": [],
   "alerts": [
     {
       "handlingRecords": [],
@@ -318,6 +179,38 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": "LOG-0033",
+      "at": "2026-07-06T07:07:40.119Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0032",
+      "at": "2026-07-06T07:06:34.606Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0031",
+      "at": "2026-07-06T07:06:01.056Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
+    {
+      "id": "LOG-0030",
+      "at": "2026-07-02T08:48:57.289Z",
+      "actor": "admin",
+      "action": "auth.login",
+      "target": "U-ADMIN",
+      "detail": "User logged in."
+    },
     {
       "id": "LOG-0029",
       "at": "2026-06-25T01:35:48.066Z",
@@ -557,9 +450,9 @@
       "username": "admin",
       "displayName": "System Administrator",
       "role": "admin",
-      "passwordHash": "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
-      "salt": "network-traffic-demo",
-      "passwordAlgorithm": "pbkdf2-sha256-120000",
+      "passwordHash": "rotation-required",
+      "salt": "rotation-required",
+      "passwordAlgorithm": "rotation-required",
       "active": true
     },
     {
@@ -567,9 +460,9 @@
       "username": "operator",
       "displayName": "Security Operator",
       "role": "operator",
-      "passwordHash": "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
-      "salt": "network-traffic-demo",
-      "passwordAlgorithm": "pbkdf2-sha256-120000",
+      "passwordHash": "rotation-required",
+      "salt": "rotation-required",
+      "passwordAlgorithm": "rotation-required",
       "active": true
     },
     {
@@ -577,9 +470,9 @@
       "username": "approver",
       "displayName": "Policy Approver",
       "role": "approver",
-      "passwordHash": "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
-      "salt": "network-traffic-demo",
-      "passwordAlgorithm": "pbkdf2-sha256-120000",
+      "passwordHash": "rotation-required",
+      "salt": "rotation-required",
+      "passwordAlgorithm": "rotation-required",
       "active": true
     },
     {
@@ -587,9 +480,9 @@
       "username": "auditor",
       "displayName": "Audit Reader",
       "role": "auditor",
-      "passwordHash": "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
-      "salt": "network-traffic-demo",
-      "passwordAlgorithm": "pbkdf2-sha256-120000",
+      "passwordHash": "rotation-required",
+      "salt": "rotation-required",
+      "passwordAlgorithm": "rotation-required",
       "active": true
     },
     {
@@ -597,9 +490,9 @@
       "username": "viewer",
       "displayName": "Read Only Viewer",
       "role": "viewer",
-      "passwordHash": "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
-      "salt": "network-traffic-demo",
-      "passwordAlgorithm": "pbkdf2-sha256-120000",
+      "passwordHash": "rotation-required",
+      "salt": "rotation-required",
+      "passwordAlgorithm": "rotation-required",
       "active": true
     }
   ],

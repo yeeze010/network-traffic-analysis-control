@@ -137,9 +137,9 @@ function LoginScreen({
             <h2>登录</h2>
             <span>角色 / 用户名 / 密码</span>
           </div>
-          <label>角色<select value={form.role} onChange={(event) => setForm({ ...form, role: event.target.value })}>{["admin", "operator", "approver", "auditor", "viewer"].map((role) => <option key={role}>{role}</option>)}</select></label>
+          <label>角色<select value={form.role} onChange={(event) => setForm({ ...form, role: event.target.value })}><option value="">请选择角色</option>{["admin", "operator", "approver", "auditor", "viewer"].map((role) => <option key={role}>{role}</option>)}</select></label>
           <label>用户名<input value={form.username} onChange={(event) => setForm({ ...form, username: event.target.value })} autoComplete="username" /></label>
-          <label>密码<input value={form.password} type="password" onChange={(event) => setForm({ ...form, password: event.target.value })} autoComplete="current-password" /></label>
+          <label>密码<input value={form.password} type="password" onChange={(event) => setForm({ ...form, password: event.target.value })} onKeyDown={(event) => event.key === "Enter" && onSubmit()} autoComplete="current-password" /></label>
           {error && <div className="runtime-banner warning" role="alert">{error}</div>}
           <button className="primary-button full" onClick={onSubmit} disabled={loading}>{loading ? "正在登录" : "登录"}</button>
         </div>
@@ -161,7 +161,9 @@ function App() {
   const [runtimeState, setRuntimeState] = useState({ loading: true, error: "" });
   const [currentUser, setCurrentUser] = useState<ApiUser | null>(null);
   const [users, setUsers] = useState<ApiUser[]>([]);
-  const [userDraft, setUserDraft] = useState({ username: "", displayName: "", role: "viewer", password: "Password123!" });
+  const [userDraft, setUserDraft] = useState({ username: "", displayName: "", role: "viewer", password: "" });
+  const [passwordResetTarget, setPasswordResetTarget] = useState<ApiUser | null>(null);
+  const [passwordResetDraft, setPasswordResetDraft] = useState("");
   const [selectedAlertId, setSelectedAlertId] = useState("");
   const [alertDetail, setAlertDetail] = useState<ApiAlertDetail | null>(null);
   const [alertAssignee, setAlertAssignee] = useState("");
@@ -169,7 +171,7 @@ function App() {
   const [evidenceDraft, setEvidenceDraft] = useState({ name: "", type: "note", reference: "" });
   const [actionMessage, setActionMessage] = useState("");
   const [busyAction, setBusyAction] = useState("");
-  const [loginForm, setLoginForm] = useState({ role: "admin", username: "admin", password: "Password123!" });
+  const [loginForm, setLoginForm] = useState({ role: "", username: "", password: "" });
   const [policyDraft, setPolicyDraft] = useState({
     name: "",
     type: "阻断",
@@ -456,7 +458,7 @@ function App() {
     try {
       const created = await createUserRequest(userDraft);
       setUsers((items) => [...items, created]);
-      setUserDraft({ username: "", displayName: "", role: "viewer", password: "Password123!" });
+      setUserDraft({ username: "", displayName: "", role: "viewer", password: "" });
       setRuntimeState({ loading: false, error: "" });
       showAction(`用户 ${created.username} 已创建。`);
     } catch (error) {
@@ -570,12 +572,24 @@ function App() {
     }
   }
 
-  async function resetPassword(id: string) {
-    setBusyAction(`user:password:${id}`);
+  function openPasswordReset(user: ApiUser) {
+    setPasswordResetTarget(user);
+    setPasswordResetDraft("");
+  }
+
+  async function submitPasswordReset() {
+    if (!passwordResetTarget) return;
+    if (passwordResetDraft.length < 12) {
+      showAction("新密码至少需要 12 个字符，并包含大小写字母、数字和符号。");
+      return;
+    }
+    setBusyAction(`user:password:${passwordResetTarget.id}`);
     try {
-      const updated = await resetUserPassword(id, "Password123!");
-      setUsers((items) => items.map((item) => (item.id === id ? updated : item)));
-      showAction(`${updated.username} 的密码已重置为默认密码。`);
+      const updated = await resetUserPassword(passwordResetTarget.id, passwordResetDraft);
+      setUsers((items) => items.map((item) => (item.id === passwordResetTarget.id ? updated : item)));
+      setPasswordResetTarget(null);
+      setPasswordResetDraft("");
+      showAction(`${updated.username} 的密码已安全重置。`);
     } catch (error) {
       setRuntimeState({ loading: false, error: (error as Error).message });
     } finally {
@@ -736,11 +750,54 @@ function App() {
             onCreate={submitUserCreate}
             onRoleChange={changeUserRole}
             onToggleActive={toggleUserActive}
-            onResetPassword={resetPassword}
+            onResetPassword={openPasswordReset}
             busyAction={busyAction}
           />
         )}
       </main>
+      {passwordResetTarget && (
+        <PasswordResetDialog
+          user={passwordResetTarget}
+          password={passwordResetDraft}
+          setPassword={setPasswordResetDraft}
+          onCancel={() => setPasswordResetTarget(null)}
+          onSubmit={submitPasswordReset}
+          loading={busyAction === `user:password:${passwordResetTarget.id}`}
+        />
+      )}
+    </div>
+  );
+}
+
+function PasswordResetDialog({
+  user,
+  password,
+  setPassword,
+  onCancel,
+  onSubmit,
+  loading
+}: {
+  user: ApiUser;
+  password: string;
+  setPassword: (value: string) => void;
+  onCancel: () => void;
+  onSubmit: () => void;
+  loading: boolean;
+}) {
+  return (
+    <div className="dialog-backdrop" onMouseDown={onCancel}>
+      <section className="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="password-reset-title" onMouseDown={(event) => event.stopPropagation()}>
+        <div className="dialog-heading">
+          <div><p className="eyebrow">用户安全</p><h2 id="password-reset-title">重置密码</h2></div>
+          <button className="icon-button" onClick={onCancel} aria-label="关闭"><X size={18} /></button>
+        </div>
+        <p>正在为 <strong>{user.displayName}</strong>（{user.username}）设置新密码。</p>
+        <label>新密码<input autoFocus value={password} type="password" minLength={12} autoComplete="new-password" onChange={(event) => setPassword(event.target.value)} onKeyDown={(event) => event.key === "Enter" && onSubmit()} /></label>
+        <div className="dialog-actions">
+          <button className="secondary-button" onClick={onCancel} disabled={loading}>取消</button>
+          <button className="primary-button" onClick={onSubmit} disabled={loading}>{loading ? "正在重置" : "确认重置"}</button>
+        </div>
+      </section>
     </div>
   );
 }
@@ -1221,7 +1278,7 @@ function Users({
   onCreate: () => void;
   onRoleChange: (id: string, role: string) => void;
   onToggleActive: (id: string, active?: boolean) => void;
-  onResetPassword: (id: string) => void;
+  onResetPassword: (user: ApiUser) => void;
   busyAction: string;
 }) {
   return (
@@ -1232,7 +1289,7 @@ function Users({
           <label>用户名<input value={draft.username} onChange={(event) => setDraft({ ...draft, username: event.target.value })} /></label>
           <label>显示名称<input value={draft.displayName} onChange={(event) => setDraft({ ...draft, displayName: event.target.value })} /></label>
           <label>角色<select value={draft.role} onChange={(event) => setDraft({ ...draft, role: event.target.value })}>{["admin", "operator", "approver", "auditor", "viewer"].map((item) => <option key={item}>{item}</option>)}</select></label>
-          <label>初始密码<input value={draft.password} type="password" onChange={(event) => setDraft({ ...draft, password: event.target.value })} /></label>
+          <label>初始密码<input value={draft.password} type="password" minLength={12} autoComplete="new-password" onChange={(event) => setDraft({ ...draft, password: event.target.value })} /></label>
           <button className="primary-button full" onClick={onCreate} disabled={busyAction === "user:create"}><Plus size={18} />新增用户</button>
         </div>
       </section>
@@ -1250,7 +1307,7 @@ function Users({
               </span>
               <span>{item.permissions.length}</span>
               <span><Badge tone={item.active === false ? "offline" : "online"}>{item.active === false ? "disabled" : "active"}</Badge></span>
-              <span><button className="mini-button" onClick={() => onResetPassword(item.id)} disabled={busyAction === `user:password:${item.id}`}>重置密码</button></span>
+              <span><button className="mini-button" onClick={() => onResetPassword(item)} disabled={busyAction === `user:password:${item.id}`}>重置密码</button></span>
               <span><button className="mini-button" onClick={() => onToggleActive(item.id, item.active)} disabled={busyAction === `user:active:${item.id}`}>{item.active === false ? "启用" : "禁用"}</button></span>
             </div>
           ))}

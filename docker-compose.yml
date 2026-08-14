@@ -1,4 +1,18 @@
 services:
+  network-traffic-db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-network_traffic}
+      POSTGRES_USER: ${POSTGRES_USER:-network_traffic_app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+    volumes:
+      - network-traffic-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
   network-traffic-web:
     build:
       context: .
@@ -13,10 +27,23 @@ services:
     command: npm run start:api
     ports:
       - "8204:8204"
-    volumes:
-      - ./data:/app/data
+    depends_on:
+      network-traffic-db:
+        condition: service_healthy
+    environment:
+      STORE_DRIVER: postgres
+      PGHOST: network-traffic-db
+      PGPORT: 5432
+      PGDATABASE: ${POSTGRES_DB:-network_traffic}
+      PGUSER: ${POSTGRES_USER:-network_traffic_app}
+      PGPASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:?BOOTSTRAP_ADMIN_PASSWORD must be set}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set}
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8204/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 10s
       timeout: 3s
       retries: 5
+
+volumes:
+  network-traffic-db-data:

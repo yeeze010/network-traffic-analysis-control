@@ -1,6 +1,8 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
-import { seedState } from "../data/seed.mjs";
+import { randomBytes } from "node:crypto";
+import { buildBootstrapState, seedState } from "../data/seed.mjs";
+import { hashPassword } from "../services/auth-service.mjs";
 
 const defaultStorePath = resolve(process.cwd(), "data", "network-traffic-store.json");
 
@@ -19,7 +21,7 @@ export class JsonStore {
     } catch (error) {
       if (error.code !== "ENOENT") throw error;
       await mkdir(dirname(this.filePath), { recursive: true });
-      await this.write(clone(seedState));
+      await this.write(buildBootstrapState());
     }
   }
 
@@ -27,7 +29,10 @@ export class JsonStore {
     await this.ensure();
     const content = await readFile(this.filePath, "utf8");
     const state = JSON.parse(content);
-    return migrateState(state);
+    const beforeMigration = JSON.stringify(state);
+    const migrated = migrateState(state);
+    if (beforeMigration !== JSON.stringify(migrated)) await this.write(migrated);
+    return migrated;
   }
 
   async write(state) {
@@ -62,25 +67,31 @@ export function createMemoryStore(initial = seedState) {
 }
 
 export function migrateState(state) {
-  if (!state.users) state.users = clone(seedState.users);
-  for (const seeded of seedState.users) {
-    if (!state.users.some((user) => user.username === seeded.username)) state.users.push(clone(seeded));
-  }
-  state.users = state.users.map((user) => {
-    const seeded = seedState.users.find((item) => item.username === user.username);
-    if (!seeded) return user;
-    if (user.passwordAlgorithm !== "pbkdf2-sha256-120000") {
-      return { ...user, passwordHash: seeded.passwordHash, salt: seeded.salt, passwordAlgorithm: seeded.passwordAlgorithm };
+  if (!Array.isArray(state.users)) state.users = [];
+  const legacyUsers = state.users.filter((user) => user.salt === "network-traffic-demo" || user.passwordAlgorithm === "rotation-required");
+  if (legacyUsers.length > 0) {
+    const password = process.env.BOOTSTRAP_ADMIN_PASSWORD;
+    if (!password || password.length < 12) {
+      throw new Error("Legacy local credentials were detected. Set BOOTSTRAP_ADMIN_PASSWORD to at least 12 characters to rotate them.");
     }
-    return user;
-  });
+    for (const user of legacyUsers) {
+      const salt = randomBytes(16).toString("hex");
+      user.passwordHash = hashPassword(password, salt);
+      user.salt = salt;
+      user.passwordAlgorithm = "pbkdf2-sha256-120000";
+    }
+    state.sessions = [];
+  }
   if (!state.trafficSessions) {
     state.trafficSessions = Array.isArray(state.sessions) && state.sessions.some((item) => item.sourceIp)
       ? state.sessions
       : clone(seedState.trafficSessions);
   }
   if (!Array.isArray(state.sessions) || state.sessions.some((item) => item.sourceIp)) state.sessions = [];
-  if (!state.auditLogs) state.auditLogs = [];
+  if (!Array.isArray(state.auditLogs)) state.auditLogs = [];
+  if (!Array.isArray(state.collectors)) state.collectors = clone(seedState.collectors);
+  if (!Array.isArray(state.policies)) state.policies = clone(seedState.policies);
+  if (!Array.isArray(state.alerts)) state.alerts = clone(seedState.alerts);
   state.alerts = state.alerts.map((alert) => ({
     handlingRecords: [],
     evidence: [],

@@ -1,56 +1,15 @@
+import { pbkdf2Sync, randomBytes } from "node:crypto";
+
+const userDefinitions = [
+  { id: "U-ADMIN", username: "admin", displayName: "System Administrator", role: "admin" },
+  { id: "U-OPS", username: "operator", displayName: "Security Operator", role: "operator" },
+  { id: "U-APPROVER", username: "approver", displayName: "Policy Approver", role: "approver" },
+  { id: "U-AUDITOR", username: "auditor", displayName: "Audit Reader", role: "auditor" },
+  { id: "U-VIEWER", username: "viewer", displayName: "Read Only Viewer", role: "viewer" }
+];
+
 export const seedState = {
-  users: [
-    {
-      id: "U-ADMIN",
-      username: "admin",
-      displayName: "System Administrator",
-      role: "admin",
-      passwordHash: "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
-      salt: "network-traffic-demo",
-      passwordAlgorithm: "pbkdf2-sha256-120000",
-      active: true
-    },
-    {
-      id: "U-OPS",
-      username: "operator",
-      displayName: "Security Operator",
-      role: "operator",
-      passwordHash: "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
-      salt: "network-traffic-demo",
-      passwordAlgorithm: "pbkdf2-sha256-120000",
-      active: true
-    },
-    {
-      id: "U-APPROVER",
-      username: "approver",
-      displayName: "Policy Approver",
-      role: "approver",
-      passwordHash: "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
-      salt: "network-traffic-demo",
-      passwordAlgorithm: "pbkdf2-sha256-120000",
-      active: true
-    },
-    {
-      id: "U-AUDITOR",
-      username: "auditor",
-      displayName: "Audit Reader",
-      role: "auditor",
-      passwordHash: "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
-      salt: "network-traffic-demo",
-      passwordAlgorithm: "pbkdf2-sha256-120000",
-      active: true
-    },
-    {
-      id: "U-VIEWER",
-      username: "viewer",
-      displayName: "Read Only Viewer",
-      role: "viewer",
-      passwordHash: "7abbe71ae60fb29bc143b5eb0b003c16cdf576087c77ec0bb7516daa0e8f508f",
-      salt: "network-traffic-demo",
-      passwordAlgorithm: "pbkdf2-sha256-120000",
-      active: true
-    }
-  ],
+  users: [],
   sessions: [],
   collectors: [
     {
@@ -215,3 +174,27 @@ export const seedState = {
     }
   ]
 };
+
+export function buildSeedState(passwords = {}) {
+  const state = JSON.parse(JSON.stringify(seedState));
+  state.users = userDefinitions
+    .filter((definition) => passwords[definition.username])
+    .map((definition) => {
+      const salt = randomBytes(16).toString("hex");
+      return {
+        ...definition,
+        passwordHash: pbkdf2Sync(passwords[definition.username], salt, 120000, 32, "sha256").toString("hex"),
+        salt,
+        passwordAlgorithm: "pbkdf2-sha256-120000",
+        active: true
+      };
+    });
+  return state;
+}
+
+export function buildBootstrapState(password = process.env.BOOTSTRAP_ADMIN_PASSWORD) {
+  if (!password || password.length < 12) {
+    throw new Error("BOOTSTRAP_ADMIN_PASSWORD must be set to at least 12 characters before initializing a new store.");
+  }
+  return buildSeedState({ admin: password });
+}

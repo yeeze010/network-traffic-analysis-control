@@ -1,8 +1,8 @@
-import { pbkdf2Sync, randomBytes, timingSafeEqual } from "node:crypto";
+import { createHmac, pbkdf2Sync, randomBytes, timingSafeEqual } from "node:crypto";
 import { appendAudit } from "./audit-service.mjs";
 
 const permissions = {
-  admin: ["read", "collector:write", "alert:write", "policy:create", "policy:publish", "audit:read", "user:read"],
+  admin: ["read", "collector:write", "alert:write", "policy:create", "policy:publish", "audit:read", "user:read", "user:write"],
   operator: ["read", "collector:write", "alert:write", "policy:create"],
   approver: ["read", "policy:publish", "audit:read"],
   auditor: ["read", "audit:read"],
@@ -11,6 +11,51 @@ const permissions = {
 
 export function hashPassword(password, salt) {
   return pbkdf2Sync(password, salt, 120000, 32, "sha256").toString("hex");
+}
+
+function jwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret.length < 32) {
+    const error = new Error("JWT_SECRET must be set to at least 32 characters.");
+    error.status = 503;
+    throw error;
+  }
+  return secret;
+}
+
+function encode(value) {
+  return Buffer.from(JSON.stringify(value)).toString("base64url");
+}
+
+function signToken(user, expiresAt) {
+  const now = Math.floor(Date.now() / 1000);
+  const header = encode({ alg: "HS256", typ: "JWT" });
+  const payload = encode({ sub: user.id, role: user.role, jti: randomBytes(16).toString("hex"), iat: now, exp: Math.floor(new Date(expiresAt).getTime() / 1000) });
+  const signature = createHmac("sha256", jwtSecret()).update(`${header}.${payload}`).digest("base64url");
+  return `${header}.${payload}.${signature}`;
+}
+
+function verifyToken(token) {
+  const parts = token.split(".");
+  if (parts.length !== 3) return null;
+  const expected = createHmac("sha256", jwtSecret()).update(`${parts[0]}.${parts[1]}`).digest();
+  const actual = Buffer.from(parts[2], "base64url");
+  if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) return null;
+  try {
+    const payload = JSON.parse(Buffer.from(parts[1], "base64url").toString("utf8"));
+    if (!payload.sub || !payload.exp || payload.exp <= Math.floor(Date.now() / 1000)) return null;
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+function validatePassword(password) {
+  if (!password || password.length < 12 || !/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/\d/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
+    const error = new Error("Password must contain at least 12 characters, including upper-case, lower-case, number and symbol.");
+    error.status = 400;
+    throw error;
+  }
 }
 
 function passwordMatches(password, salt, expectedHash) {
@@ -43,12 +88,13 @@ export function login(state, username, password, role) {
     error.status = 403;
     throw error;
   }
-  const token = `nt-${randomBytes(24).toString("hex")}`;
+  const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString();
+  const token = signToken(user, expiresAt);
   const session = {
     token,
     userId: user.id,
     createdAt: new Date().toISOString(),
-    expiresAt: new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString()
+    expiresAt
   };
   state.sessions.unshift(session);
   appendAudit(state, user.username, "auth.login", user.id, "User logged in.");
@@ -58,8 +104,9 @@ export function login(state, username, password, role) {
 export function authenticate(state, req) {
   const header = req.headers.authorization || "";
   const token = header.startsWith("Bearer ") ? header.slice("Bearer ".length) : "";
+  const payload = token ? verifyToken(token) : null;
   const session = state.sessions.find((item) => item.token === token);
-  if (!session || new Date(session.expiresAt).getTime() < Date.now()) {
+  if (!payload || !session || payload.sub !== session.userId || new Date(session.expiresAt).getTime() < Date.now()) {
     const error = new Error("Authentication required.");
     error.status = 401;
     throw error;
@@ -96,6 +143,7 @@ export function createUser(state, payload, actor) {
     error.status = 400;
     throw error;
   }
+  validatePassword(payload.password);
   if (state.users.some((user) => user.username === payload.username)) {
     const error = new Error(`Username already exists: ${payload.username}.`);
     error.status = 409;
@@ -145,11 +193,7 @@ export function resetPassword(state, userId, password, actor) {
     error.status = 404;
     throw error;
   }
-  if (!password || password.length < 8) {
-    const error = new Error("Password must be at least 8 characters.");
-    error.status = 400;
-    throw error;
-  }
+  validatePassword(password);
   const salt = randomBytes(16).toString("hex");
   user.passwordHash = hashPassword(password, salt);
   user.salt = salt;

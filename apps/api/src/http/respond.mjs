@@ -9,7 +9,7 @@ export function sendJson(res, status, data, origin, allowedOrigins) {
   const headers = {
     "Content-Type": "application/json; charset=utf-8",
     "Access-Control-Allow-Methods": "GET,POST,PATCH,OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type,X-Actor",
+    "Access-Control-Allow-Headers": "Authorization,Content-Type,X-Actor",
     "Cache-Control": "no-store"
   };
   if (origin && allowedOrigins.has(origin)) headers["Access-Control-Allow-Origin"] = origin;
